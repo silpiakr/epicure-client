@@ -4,6 +4,7 @@ import {
 import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home/Home";
 import SignUp from "../pages/SignUp/SignUp";
+import Login from "../pages/Login/Login";
 
   const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ import SignUp from "../pages/SignUp/SignUp";
         {
             path: 'signUp',
             element: <SignUp></SignUp>
+        },
+        {
+          path: 'login',
+          element: <Login></Login>
         }
       ]
     },
