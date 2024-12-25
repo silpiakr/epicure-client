@@ -4,6 +4,7 @@ import AuthContext from '../../context/AuthContext/AuthContext';
 import logo from '../../assets/images/epicure-logo.png'
 import { FaRegCircleUser } from "react-icons/fa6";
 import { MdOutlineEdit } from "react-icons/md";
+import { toast } from 'react-toastify';
 
 
 const Navbar = () => {
@@ -13,10 +14,10 @@ const Navbar = () => {
     const handleSignOut = () => {
         signOutUser()
             .then(() => {
-             //   console.log('Sign out successfully');
+               toast.success('Sign out successfully');
             })
             .catch(error => {
-              //  console.log('ERROR', error.message);
+               toast.error('ERROR', error.message);
             })
     }
 
@@ -48,8 +49,8 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className='flex flex-row items-center'>
-                    <img src={logo} className='w-12' alt="" />
-                    <a className="pl-3 text-lg md:text-3xl text-nowrap font-bold">Career Counseling</a>
+                    <img src={logo} className='w-16' alt="" />
+                    <a className="pl-3 text-lg md:text-3xl text-nowrap font-bold">EPICURE</a>
                 </div>
             </div>
             <div className="navbar-center hidden lg:flex">
