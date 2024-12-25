@@ -65,7 +65,7 @@ const Banner = () => {
                                 <p className="mb-5">{slide.description}</p>
                                 <button
                                     onClick={() => navigate('/all-foods')}
-                                    className="btn btn-accent"
+                                    className="btn btn-warning"
                                 >
                                     Explore All Foods
                                 </button>
