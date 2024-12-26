@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/AuthContext/AuthContext';
 import { AiOutlineGoogle } from "react-icons/ai";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -15,9 +15,10 @@ const Login = () => {
     const [showPass, setShowPass] = useState(false);
     const [success, setSuccess] = useState(false);
     const [loginError, setLoginError] = useState(false);
-    const emailRef = useRef();
-
+    const location = useLocation();
+    const from = location.state || '/';
     const navigate = useNavigate();
+    const emailRef = useRef();
 
     const handleLogin = e => {
         e.preventDefault();
@@ -31,7 +32,7 @@ const Login = () => {
            console.log(result.user);
            Swal.fire("Success", "Registration successful!", "success");
             e.target.reset();
-            navigate('/');
+            navigate(from);
 
             // toast('login successfully!');
         })
