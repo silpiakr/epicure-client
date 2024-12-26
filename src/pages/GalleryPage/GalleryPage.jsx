@@ -28,7 +28,7 @@ const GalleryPage = () => {
         <div className="gallery-page">
             {/* Page Title Section */}
             <div
-                className="page-title h-80 flex items-center justify-center text-center text-white"
+                className="page-title h-96 flex items-center justify-center text-center text-white"
                 style={{
                     backgroundImage: "url(https://i.ibb.co.com/6067PyY/rb-499.png)",
                     backgroundSize: '100%',
