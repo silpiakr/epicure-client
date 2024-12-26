@@ -50,7 +50,7 @@ const TopFoods = () => {
                 <div className="text-center mt-8">
                     <button
                         onClick={() => navigate('/all-foods')}
-                        className="btn btn-secondary px-6 py-2"
+                        className="btn btn-warning px-6 py-2"
                     >
                         See All
                     </button>
