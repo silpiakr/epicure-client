@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 
 const FoodDetails = () => {
-    const { id } = useParams(); // Get the food ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
-    const [food, setFood] = useState(null); // Manage food data state
-    const [loading, setLoading] = useState(true); // Loading state
+    const [food, setFood] = useState(null);
+    const [loading, setLoading] = useState(true); 
 
-    // Fetch food details on component mount
     useEffect(() => {
         fetch(`http://localhost:5000/foods/${id}`)
             .then((response) => {
@@ -42,7 +41,7 @@ const FoodDetails = () => {
                 return response.json();
             })
             .then(() => {
-                navigate(`/purchase/${id}`); // Redirect to purchase page
+                navigate(`/purchase/${id}`); 
             })
             .catch((error) => console.error("Error purchasing food:", error));
     };
@@ -83,14 +82,8 @@ const FoodDetails = () => {
                     <p>
                         <span className="font-semibold">Description:</span> {food.description}
                     </p>
-                    <p>
-                        <span className="font-semibold">Added By:</span> {food.addedBy.name} ({food.addedBy.email})
-                    </p>
-                    <p>
-                        <span className="font-semibold">Purchase Count:</span> {food.purchaseCount}
-                    </p>
                     {/* Purchase Button */}
-                    <button onClick={handlePurchase} className="btn btn-warning mt-5">
+                    <button onClick={handlePurchase}  className="btn btn-warning mt-5">
                         Purchase
                     </button>
                 </div>

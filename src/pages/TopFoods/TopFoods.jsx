@@ -8,7 +8,7 @@ const TopFoods = () => {
     // Fetch food data
     useEffect(() => {
         // Replace with your actual API or data fetching logic
-        fetch('/api/foods') // Example API endpoint
+        fetch('http://localhost:5000/foods') // Example API endpoint
             .then((response) => response.json())
             .then((data) => {
                 // Sort by purchase count and get top 6
@@ -25,7 +25,7 @@ const TopFoods = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {foods.map((food) => (
                         <div
-                            key={food.id}
+                            key={food._id}
                             className="card bg-white shadow-lg rounded-lg overflow-hidden"
                         >
                             <img

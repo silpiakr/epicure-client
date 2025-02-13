@@ -25,6 +25,7 @@ const Navbar = () => {
         <li><Link className='mr-5 font-semibold text-gray-600' to='/'>Home</Link></li>
         <li><Link className='mr-5 font-semibold text-gray-600' to='/foods'>All Foods</Link></li>
         <li><Link className='mr-5 font-semibold text-gray-600' to='/galleryPage'>Gallery</Link></li>
+        <li><Link className='mr-5 font-semibold text-gray-600' to='/purchases'>Purchases</Link></li>
     </>
     return (
         <div className="navbar bg-base-100 py-6">
