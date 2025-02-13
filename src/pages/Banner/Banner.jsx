@@ -64,7 +64,7 @@ const Banner = () => {
                                 <h1 className="mb-5 text-5xl font-bold">{slide.title}</h1>
                                 <p className="mb-5">{slide.description}</p>
                                 <button
-                                    onClick={() => navigate('/all-foods')}
+                                    onClick={() => navigate('/foods')}
                                     className="btn btn-warning"
                                 >
                                     Explore All Foods

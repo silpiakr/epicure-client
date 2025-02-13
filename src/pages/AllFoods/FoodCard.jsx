@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const FoodCard = ({ food }) => {
+const FoodCard = ({ food, foods, setFoods }) => {
     const { _id, image, name, price } = food;
+    console.log(" Food Id is", _id);
+    
     return (
         <div className="card card-compact bg-base-100 shadow-xl">
             <figure className='h-44'>
@@ -18,6 +20,8 @@ const FoodCard = ({ food }) => {
                     <Link to={`/foodDetails/${_id}`}>
                         <button className="btn btn-warning">View Details</button>
                     </Link>
+                    {/* <Link to={`/foodDetails/${food.id}`}>View Details</Link> */}
+
                 </div>
             </div>
         </div>

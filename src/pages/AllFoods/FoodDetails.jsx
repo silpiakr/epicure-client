@@ -1,91 +1,118 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import Loader from '../Loader/Loader';
+// import React from "react";
+// import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+// import Loader from "../Loader/Loader";
+
+// const FoodDetails = () => {
+//     const food = useLoaderData();  // Load data directly from the router loader
+//     const { _id, image, name, category, origin, price, description } = food || {};
+//     const navigate = useNavigate();
+//     const { id } = useParams(); // Extract the food ID from URL params
+
+//     // Handle food purchase
+//     const handlePurchase = () => {
+//         const buyerName = 'John Doe';  // Example, should come from user input
+//         const buyerEmail = 'johndoe@example.com';  // Example, should come from user input
+//         const quantity = 1;  // Example, should come from user input
+    
+//         console.log("Attempting purchase for food ID:", id); // Debugging log
+    
+//         fetch(`http://localhost:5000/foods/${id}/purchase`, {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify({
+//                 buyerName,
+//                 buyerEmail,
+//                 quantity,
+//             }),
+//         })
+//             .then((response) => {
+//                 if (!response.ok) {
+//                     throw new Error("Failed to process purchase");
+//                 }
+//                 return response.json();
+//             })
+//             .then((data) => {
+//                 console.log("Purchase successful:", data);
+//                 navigate(`/purchases/${id}`);
+//             })
+//             .catch((error) => console.error("Error purchasing food:", error));
+//     };
+    
+
+//     // Show loader while fetching data
+//     if (!food) {
+//         return <Loader />;
+//     }
+
+//     // Render food details
+//     return (
+//         <div className="hero bg-base-200 min-h-screen">
+//             <div className="hero-content flex-col lg:flex-row">
+//                 {/* Food Image */}
+//                 <img
+//                     src={image}
+//                     alt={name}
+//                     className="max-w-sm rounded-lg shadow-2xl"
+//                 />
+
+//                 {/* Food Information */}
+//                 <div className="ml-6">
+//                     <h1 className="text-3xl font-bold mb-4">{name}</h1>
+//                     <p className="font-semibold">Category: {category}</p>
+//                     <p className="font-semibold">Origin: {origin}</p>
+//                     <p>Price: ${price ? price.toFixed(2) : "N/A"}</p>
+//                     <p>Description: {description}</p>
+                    
+//                     {/* Purchase Button */}
+//                     <button onClick={handlePurchase} className="btn btn-warning mt-5">
+//                         Purchase
+//                     </button>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// };
+
+// export default FoodDetails;
+
+import React from "react";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 const FoodDetails = () => {
-    const { id } = useParams();
+    const food = useLoaderData();
+    const { _id, image, name, category, origin, price, description, purchaseCount } = food || {};
     const navigate = useNavigate();
-    const [food, setFood] = useState(null);
-    const [loading, setLoading] = useState(true); 
 
-    useEffect(() => {
-        fetch(`http://localhost:5000/foods/${id}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch food details');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setFood(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching food details:", error);
-                setLoading(false);
-            });
-    }, [id]);
-
-    // Handle food purchase
-    const handlePurchase = () => {
-        fetch(`http://localhost:5000/foods/${id}/purchase`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to process purchase');
-                }
-                return response.json();
-            })
-            .then(() => {
-                navigate(`/purchase/${id}`); 
-            })
-            .catch((error) => console.error("Error purchasing food:", error));
-    };
-
-    // Display loader while fetching data
-    if (loading) {
+    if (!food) {
         return <Loader />;
     }
 
-    // Display message if food is not found
-    if (!food) {
-        return <p className="text-center text-lg text-red-500">Food not found.</p>;
-    }
+    // Redirect to purchase page
+    // const handlePurchaseRedirect = () => {
+    //     navigate(`/purchase/${_id}`);
+    // };
 
-    // Render food details
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col lg:flex-row">
-                {/* Food Image */}
-                <img
-                    src={food.image}
-                    alt={food.name}
-                    className="max-w-sm rounded-lg shadow-2xl"
-                />
+                <img src={image} alt={name} className="max-w-sm rounded-lg shadow-2xl" />
 
-                {/* Food Information */}
                 <div className="ml-6">
-                    <h1 className="text-3xl font-bold mb-4">{food.name}</h1>
-                    <p className="font-semibold">
-                        <span className="font-semibold">Category:</span> {food.category}
-                    </p>
-                    <p className=" font-semibold">
-                        <span className="font-semibold">Origin:</span> {food.origin}
-                    </p>
-                    <p>
-                        <span className="font-semibold">Price:</span> ${food.price.toFixed(2)}
-                    </p>
-                    <p>
-                        <span className="font-semibold">Description:</span> {food.description}
-                    </p>
+                    <h1 className="text-3xl font-bold mb-4">{name}</h1>
+                    <p className="font-semibold">Category: {category}</p>
+                    <p className="font-semibold">Origin: {origin}</p>
+                    <p>Price: ${price ? price.toFixed(2) : "N/A"}</p>
+                    <p>Description: {description}</p>
+                    <p className="font-semibold">Purchased: {purchaseCount || 0} times</p>
+
                     {/* Purchase Button */}
-                    <button onClick={handlePurchase}  className="btn btn-warning mt-5">
+                    {/* <button onClick={handlePurchaseRedirect} className="btn btn-warning mt-5">
                         Purchase
-                    </button>
+                    </button> */}
+                    <Link to={`/purchase/${_id}`} className="btn btn-warning mt-5">Purchase</Link>
                 </div>
             </div>
         </div>
@@ -93,3 +120,4 @@ const FoodDetails = () => {
 };
 
 export default FoodDetails;
+

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import FoodCard from './FoodCard';
+import { useLoaderData } from 'react-router-dom';
 
 const Foods = () => {
-    const [foods, setFoods] = useState([]);
+    const loadedData = useLoaderData() || [];
+    const [foods, setFoods] = useState(loadedData);
 
-    useEffect(() => {
-        fetch('http://localhost:5000/foods')
-            .then(res => res.json())
-            .then(data => {
-                setFoods(data);
-            })
-    }, []);
+    // useEffect(() => {
+    //     fetch('http://localhost:5000/foods')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             setFoods(data);
+    //         })
+    // }, []);
 
     return (
         <div>
@@ -20,7 +22,7 @@ const Foods = () => {
             </div>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-5'>
                 {
-                    foods.map(food => <FoodCard key={food._id} food={food}></FoodCard>)
+                    foods.map(food => <FoodCard key={food._id} food={food} setFoods={setFoods}></FoodCard>)
                 }
             </div>
         </div>

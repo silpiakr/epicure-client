@@ -1,6 +1,4 @@
-import {
-    createBrowserRouter
-  } from "react-router-dom";
+import {createBrowserRouter} from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home/Home";
 import SignUp from "../pages/SignUp/SignUp";
@@ -8,7 +6,7 @@ import Login from "../pages/Login/Login";
 import GalleryPage from "../pages/GalleryPage/GalleryPage";
 import Foods from "../pages/AllFoods/Foods";
 import FoodDetails from "../pages/AllFoods/FoodDetails";
-import Purchases from "../pages/FoodPurchase/Purchases";
+import FoodPurchase from "../pages/FoodPurchase/FoodPurchase";
 
   const router = createBrowserRouter([
     {
@@ -34,7 +32,8 @@ import Purchases from "../pages/FoodPurchase/Purchases";
         },
         {
           path: 'foods',
-          element: <Foods></Foods>
+          element: <Foods></Foods>,
+          loader: () => fetch('http://localhost:5000/foods')
         },
         {
           path: 'foodDetails/:id',
@@ -42,9 +41,9 @@ import Purchases from "../pages/FoodPurchase/Purchases";
           loader: ({params}) => fetch(`http://localhost:5000/foods/${params.id}`)
         },
         {
-          path: 'purchases/:id',
-          element:  <Purchases></Purchases>,
-          loader: ({params}) => fetch(`http://localhost:5000/foods/${params.id}`)
+          path: 'purchase/:id',
+          element:  <FoodPurchase></FoodPurchase>,
+          loader: ({ params }) => fetch(`http://localhost:5000/purchases/${params.id}`), 
         }
       ]
     },
