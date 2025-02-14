@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Banner = () => {
     const navigate = useNavigate();
@@ -63,12 +63,13 @@ const Banner = () => {
                             <div className="max-w-md">
                                 <h1 className="mb-5 text-5xl font-bold">{slide.title}</h1>
                                 <p className="mb-5">{slide.description}</p>
-                                <button
-                                    onClick={() => navigate('/foods')}
-                                    className="btn btn-warning"
-                                >
-                                    Explore All Foods
-                                </button>
+                                <Link to='/foods'>
+                                    <button
+                                        className="btn btn-warning"
+                                    >
+                                        Explore All Foods
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

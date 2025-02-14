@@ -1,8 +1,7 @@
-import React, { useContext, useState,  } from "react";
+import React, { useContext, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
-
 
 const FoodPurchase = () => {
     const food = useLoaderData();
@@ -20,7 +19,7 @@ const FoodPurchase = () => {
             quantity,
             buyerName: user?.displayName,
             buyerEmail: user?.email,
-            buyingDate: Date.now(),
+            buyingDate: new Date().toISOString(), // Store proper timestamp
         };
 
         try {
@@ -50,18 +49,18 @@ const FoodPurchase = () => {
             <form onSubmit={handlePurchase} className="space-y-4">
                 <div>
                     <label className="block font-semibold">Food Name:</label>
-                    <input type="text" value={food.name} readOnly className="input input-bordered w-full" />
+                    <input type="text" value={name || ""} readOnly className="input input-bordered w-full" />
                 </div>
                 <div>
                     <label className="block font-semibold">Price:</label>
-                    <input type="text" value={`$ ${price}`} readOnly className="input input-bordered w-full" />
+                    <input type="text" value={`$ ${price || 0}`} readOnly className="input input-bordered w-full" />
                 </div>
                 <div>
                     <label className="block font-semibold">Quantity:</label>
                     <input 
                         type="number"
                         value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
+                        onChange={(e) => setQuantity(Number(e.target.value))}
                         className="input input-bordered w-full"
                         min="1"
                         required
@@ -69,15 +68,15 @@ const FoodPurchase = () => {
                 </div>
                 <div>
                     <label className="block font-semibold">Buyer Name:</label>
-                    <input type="text" value={user?.displayName} readOnly className="input input-bordered w-full" />
+                    <input type="text" value={user?.displayName || ""} readOnly className="input input-bordered w-full" />
                 </div>
                 <div>
                     <label className="block font-semibold">Buyer Email:</label>
-                    <input type="email" value={user?.email} readOnly className="input input-bordered w-full" />
+                    <input type="email" value={user?.email || ""} readOnly className="input input-bordered w-full" />
                 </div>
                 <div>
                     <label className="block font-semibold">Date:</label>
-                    <input type="email" value={Date} readOnly className="input input-bordered w-full" />
+                    <input type="text" value={new Date().toLocaleString()} readOnly className="input input-bordered w-full" />
                 </div>
                 <button type="submit" className="btn btn-primary w-full">
                     Purchase

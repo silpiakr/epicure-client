@@ -9,9 +9,22 @@ const MyFoods = () => {
     const [selectedFood, setSelectedFood] = useState(null);
     const navigate = useNavigate();
 
+    const fetchMyFoods = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/my-foods?email=${user.email}`);
+            if (!response.ok) throw new Error("Failed to fetch");
+    
+            const data = await response.json();
+            setMyFoods(data);
+        } catch (error) {
+            console.error("Error fetching my foods:", error);
+        }
+    };
+    
+
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:5000/my-foods?email=${user.email}`)
+            fetch(`http://localhost:5000/myFoods?email=${user.email}`)
                 .then((res) => res.json())
                 .then((data) => setFoods(data));
         }

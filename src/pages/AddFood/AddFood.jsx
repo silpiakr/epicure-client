@@ -1,141 +1,119 @@
-// import React, { useState } from 'react';
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
-// toast.configure();
+const AddFood = ({ user }) => {
+    
+    const [foodData, setFoodData] = useState({
+        name: "",
+        image: "",
+        category: "",
+        quantity: "",
+        price: "",
+        origin: "",
+        description: "",
+    });
 
-// const AddFood = () => {
-//     const [formData, setFormData] = useState({
-//         name: '',
-//         image: '',
-//         category: '',
-//         quantity: '',
-//         price: '',
-//         origin: '',
-//         description: '',
-//     });
+    const navigate = useNavigate();
 
-//     const handleChange = (e) => {
-//         const { name, value } = e.target;
-//         setFormData({ ...formData, [name]: value });
-//     };
+    // Handle input change
+    const handleChange = (e) => {
+        setFoodData({ ...foodData, [e.target.name]: e.target.value });
+    };
 
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
+    // Handle form submission
+    // const handleAddFood = async (e) => {
+    //     e.preventDefault();
+        
+    //     const foodItem = {
+    //         ...foodData,
+    //         quantity: parseInt(foodData.quantity),
+    //         price: parseFloat(foodData.price),
+    //         addedBy: { 
+    //             name: user?.displayName || "Anonymous", 
+    //             email: user?.email || "No email" 
+    //         },
+    //     };
 
-//         const user = JSON.parse(localStorage.getItem('user'));
-//         const addedBy = {
-//             name: user.name,
-//             email: user.email,
-//         };
+    //     fetch('http://localhost:5000/foods', {
+    //         method: 'POST',
+    //         headers: {
+    //             'content-type' : 'application/json'
+    //         },
+    //         body: JSON.stringify(foodItem)
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         console.log(data);
+    //         if(data.insertedId){
+    //             Swal.fire({
+    //                 icon: "success",
+    //                 title: "Success!",
+    //                 text: "Coffee Added Successfully!"
+    //               });
+    //         }
+    //     })
 
-//         try {
-//             const response = await fetch('/api/foods', {
-//                 method: 'POST',
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     Authorization: `Bearer ${localStorage.getItem('token')}`,
-//                 },
-//                 body: JSON.stringify({ ...formData, addedBy }),
-//             });
 
-//             if (response.ok) {
-//                 const data = await response.json();
-//                 toast.success('Food item added successfully!');
-//                 setFormData({
-//                     name: '',
-//                     image: '',
-//                     category: '',
-//                     quantity: '',
-//                     price: '',
-//                     origin: '',
-//                     description: '',
-//                 });
-//             } else {
-//                 throw new Error('Failed to add food item');
-//             }
-//         } catch (error) {
-//             toast.error(error.message);
-//         }
-//     };
+     
+    // };
 
-//     return (
-//         <div className="add-food-page">
-//             <h1>Add Food</h1>
-//             <form onSubmit={handleSubmit}>
-//                 <label>
-//                     Food Name:
-//                     <input
-//                         type="text"
-//                         name="name"
-//                         value={formData.name}
-//                         onChange={handleChange}
-//                         required
-//                     />
-//                 </label>
-//                 <label>
-//                     Food Image (URL):
-//                     <input
-//                         type="text"
-//                         name="image"
-//                         value={formData.image}
-//                         onChange={handleChange}
-//                         required
-//                     />
-//                 </label>
-//                 <label>
-//                     Food Category:
-//                     <input
-//                         type="text"
-//                         name="category"
-//                         value={formData.category}
-//                         onChange={handleChange}
-//                         required
-//                     />
-//                 </label>
-//                 <label>
-//                     Quantity:
-//                     <input
-//                         type="number"
-//                         name="quantity"
-//                         value={formData.quantity}
-//                         onChange={handleChange}
-//                         required
-//                     />
-//                 </label>
-//                 <label>
-//                     Price:
-//                     <input
-//                         type="number"
-//                         name="price"
-//                         value={formData.price}
-//                         onChange={handleChange}
-//                         required
-//                     />
-//                 </label>
-//                 <label>
-//                     Food Origin:
-//                     <input
-//                         type="text"
-//                         name="origin"
-//                         value={formData.origin}
-//                         onChange={handleChange}
-//                         required
-//                     />
-//                 </label>
-//                 <label>
-//                     Short Description:
-//                     <textarea
-//                         name="description"
-//                         value={formData.description}
-//                         onChange={handleChange}
-//                         required
-//                     ></textarea>
-//                 </label>
-//                 <button type="submit">Add Item</button>
-//             </form>
-//         </div>
-//     );
-// };
+    const handleAddFood = async (e) => {
+        e.preventDefault();
+    
+        if (!user) {
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: "You must be logged in to add food.",
+            });
+            return;
+        }
+    
+        const foodItem = {
+            ...foodData,
+            quantity: parseInt(foodData.quantity),
+            price: parseFloat(foodData.price),
+            addedBy: { name: user.displayName || "Anonymous", email: user.email || "No email" },
+        };
+    
+        fetch('http://localhost:5000/foods', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(foodItem),
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.insertedId) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Food added successfully!",
+                });
+            }
+        });
+    };
+    
 
-// export default AddFood;
+    return (
+        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
+            <h2 className="text-2xl font-bold text-center mb-6">Add New Food</h2>
+            <form onSubmit={handleAddFood} className="grid grid-cols-1 gap-4">
+                
+                <input type="text" name="name" placeholder="Food Name" className="input input-bordered" onChange={handleChange} required />
+                <input type="text" name="image" placeholder="Food Image URL" className="input input-bordered" onChange={handleChange} required />
+                <input type="text" name="category" placeholder="Category (e.g. Fast Food, Dessert)" className="input input-bordered" onChange={handleChange} required />
+                <input type="number" name="quantity" placeholder="Quantity" className="input input-bordered" onChange={handleChange} required />
+                <input type="number" step="0.01" name="price" placeholder="Price ($)" className="input input-bordered" onChange={handleChange} required />
+                <input type="text" name="origin" placeholder="Country of Origin" className="input input-bordered" onChange={handleChange} required />
+                <textarea name="description" placeholder="Short description (ingredients, recipe)" className="textarea textarea-bordered" onChange={handleChange} required></textarea>
+
+                {/* Submit Button */}
+                <button type="submit" className="btn btn-primary w-full">Add Item</button>
+            </form>
+        </div>
+    );
+};
+
+export default AddFood;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const FoodCard = ({ food, foods, setFoods }) => {
     const { _id, image, name, price } = food;
-    console.log(" Food Id is", _id);
+    // console.log(" Food Id is", _id);
     
     return (
         <div className="card card-compact bg-base-100 shadow-xl">
