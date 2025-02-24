@@ -16,7 +16,6 @@ const Login = () => {
     const [success, setSuccess] = useState(false);
     const [loginError, setLoginError] = useState(false);
     const location = useLocation();
-    const from = location.state || '/';
     const navigate = useNavigate();
     const emailRef = useRef();
 
@@ -30,11 +29,10 @@ const Login = () => {
         signInUser(email, password)
         .then(result => {
            console.log(result.user);
-           Swal.fire("Success", "Registration successful!", "success");
+           Swal.fire("Success", "Login successful!", "success");
             e.target.reset();
-            navigate(from);
+            navigate('/');
 
-            // toast('login successfully!');
         })
         .catch(error => {
            toast.error('ERROR', error.message);
@@ -48,7 +46,7 @@ const Login = () => {
            console.log(result.user);
             setSuccess(true);
 
-            toast('Login with Google successfully!');
+            Swal.fire('Login with Google successfully!');
             navigate('/');
         })
         .catch(error => {
@@ -66,7 +64,7 @@ const Login = () => {
         else{
             sendPasswordResetEmail(auth, email)
             .then(() => {
-                toast.success('Password reset email sent, check your email');
+                Swal.fire('Password reset email sent, check your email');
             })
         }
 

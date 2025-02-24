@@ -1,89 +1,108 @@
-import React, { useContext, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import AuthContext from "../../context/AuthContext/AuthContext";
 import { toast } from "react-toastify";
 
 const FoodPurchase = () => {
-    const food = useLoaderData();
-    const { name, price, _id } = food || {};
-    const { user } = useContext(AuthContext); // Getting logged-in user details
-    const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+    const { id } = useParams(); 
+    const [food, setFood] = useState(null);
     const [quantity, setQuantity] = useState(1);
 
-    const handlePurchase = async (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        fetch(`http://localhost:5000/foods/${id}`)
+            .then(res => res.json())
+            .then(data => setFood(data))
+            .catch(err => console.error(err));
+    }, [id]);
 
-        const purchaseData = {
-            foodName: name,
-            price,
-            quantity,
-            buyerName: user?.displayName,
-            buyerEmail: user?.email,
-            buyingDate: new Date().toISOString(), // Store proper timestamp
-        };
-
-        try {
-            const response = await fetch(`http://localhost:5000/foods/${_id}/purchase`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(purchaseData),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to process purchase");
-            }
-
-            toast.success("Purchase successful!");
-            navigate(`/purchases/${_id}`);
-        } catch (error) {
-            toast.error("Error processing purchase");
-            console.error("Purchase error:", error);
-        }
+    const handleQuantityChange = (e) => {
+        let value = parseInt(e.target.value);
+        if (isNaN(value) || value < 1) value = 1;
+        if (value > food.availableQuantity) value = food.availableQuantity;
+        setQuantity(value);
     };
 
+  
+    const handlePurchase = () => {
+        if (!food || quantity > food.availableQuantity) return;
+    
+        const purchaseData = {
+            foodId: food._id || id,
+            foodName: food.name,
+            price: parseFloat(food.price), 
+            quantity: parseInt(quantity), 
+            buyerEmail: user?.email,
+            date: new Date().toISOString(),
+        };
+    
+         console.log("Sending purchase data:", purchaseData); 
+    
+    
+        fetch("http://localhost:5000/purchase", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(purchaseData),
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("✅ Server response:", data);
+                if (data.success) {
+                    toast.success("Food purchased successfully!");
+                } else {
+                    toast.error(`❌ Purchase failed: ${data.message}`);
+                }
+            })
+            .catch(err => {
+                console.error("🚨 Purchase Error:", err);
+                toast.error("❌ Purchase failed! Please try again.");
+            });
+    };
+    
+    
+
+    if (!food) return <p>Loading...</p>;
+
+    const isOwnFood = user.email === food.sellerEmail;
+    const isOutOfStock = food.availableQuantity === 0;
+
     return (
-        <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-4">Purchase {name}</h1>
-            <form onSubmit={handlePurchase} className="space-y-4">
-                <div>
-                    <label className="block font-semibold">Food Name:</label>
-                    <input type="text" value={name || ""} readOnly className="input input-bordered w-full" />
-                </div>
-                <div>
-                    <label className="block font-semibold">Price:</label>
-                    <input type="text" value={`$ ${price || 0}`} readOnly className="input input-bordered w-full" />
-                </div>
-                <div>
-                    <label className="block font-semibold">Quantity:</label>
-                    <input 
-                        type="number"
-                        value={quantity}
-                        onChange={(e) => setQuantity(Number(e.target.value))}
-                        className="input input-bordered w-full"
-                        min="1"
-                        required
-                    />
-                </div>
-                <div>
-                    <label className="block font-semibold">Buyer Name:</label>
-                    <input type="text" value={user?.displayName || ""} readOnly className="input input-bordered w-full" />
-                </div>
-                <div>
-                    <label className="block font-semibold">Buyer Email:</label>
-                    <input type="email" value={user?.email || ""} readOnly className="input input-bordered w-full" />
-                </div>
-                <div>
-                    <label className="block font-semibold">Date:</label>
-                    <input type="text" value={new Date().toLocaleString()} readOnly className="input input-bordered w-full" />
-                </div>
-                <button type="submit" className="btn btn-primary w-full">
-                    Purchase
-                </button>
-            </form>
+        <div className="container mx-auto p-4">
+            <h2 className="text-2xl font-bold">{food.name}</h2>
+            <p className="text-lg">Price: ${food.price}</p>
+            <p className="text-lg">Available: {food.availableQuantity} pcs</p>
+
+            {isOwnFood && (
+                <p className="text-red-500">⚠️ You can't purchase your own food item.</p>
+            )}
+
+            {isOutOfStock && (
+                <p className="text-red-500">⚠️ This item is out of stock. You cannot purchase it.</p>
+            )}
+
+            <div className="mt-4">
+                <label className="block mb-2">Quantity:</label>
+                <input
+                    type="number"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    min="1"
+                    max={food.availableQuantity}
+                    className="border p-2"
+                    disabled={isOwnFood || isOutOfStock}
+                />
+            </div>
+
+            <button
+                onClick={handlePurchase}
+                className="mt-4 btn btn-primary"
+                disabled={isOwnFood || isOutOfStock}
+            >
+                Purchase
+            </button>
         </div>
     );
 };
 
 export default FoodPurchase;
+

@@ -7,8 +7,7 @@ import { toast } from 'react-toastify';
 
 
 const SignUp = () => {
-    const {signInUser, signInWithGoogle} = useContext(AuthContext);
-    const {createUser, updateUserProfile} = useContext(AuthContext);
+    const {signInUser, signInWithGoogle, createUser, updateUserProfile} = useContext(AuthContext);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();

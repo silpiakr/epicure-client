@@ -3,19 +3,21 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home/Home";
 import SignUp from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
-import GalleryPage from "../pages/GalleryPage/GalleryPage";
 import Foods from "../pages/AllFoods/Foods";
 import FoodDetails from "../pages/AllFoods/FoodDetails";
 import FoodPurchase from "../pages/FoodPurchase/FoodPurchase";
 import MyFoods from "../pages/MyFoods/MyFoods";
 import AddFood from "../pages/AddFood/AddFood";
 import MyOrders from "../pages/MyOrders/MyOrders";
+import Gallery from "../pages/GalleryPage/Gallery";
+import UpdateFood from "../pages/UpdateFood/UpdateFood";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: <MainLayout></MainLayout>,
-      errorElement: <h2>Not Found</h2>,
+      errorElement: <ErrorPage></ErrorPage>,
       children: [
         {
             path: '/',
@@ -30,13 +32,14 @@ import MyOrders from "../pages/MyOrders/MyOrders";
           element: <Login></Login>
         },
         {
-          path: 'galleryPage',
-          element: <GalleryPage></GalleryPage>
+          path: 'gallery',
+          element: <Gallery></Gallery>
         },
+
         {
           path: 'foods',
           element: <Foods></Foods>,
-          loader: () => fetch('http://localhost:5000/foods')
+          loader: () => fetch(`http://localhost:5000/foods`)
         },
         {
           path: 'foodDetails/:id',
@@ -51,15 +54,22 @@ import MyOrders from "../pages/MyOrders/MyOrders";
         {
           path: 'myFoods',
           element: <MyFoods></MyFoods>,
-          // loader: () => fetch('http://localhost:5000/foods')
+          loader: () => fetch('http://localhost:5000/foods')
         },
         {
           path: 'addFood',
-          element: <AddFood></AddFood>
+          element: <AddFood></AddFood>,
         },
         {
           path: 'myOrders',
-          element: <MyOrders></MyOrders>
+          element: <MyOrders></MyOrders>,
+          loader: () => fetch('http://localhost:5000/foods')
+        },
+        {
+          path: 'update/:id',
+          element: <UpdateFood></UpdateFood>,
+          loader: async ({ params }) =>
+            fetch(`http://localhost:5000/foods/${params.id}`)
         }
       ]
     },

@@ -22,79 +22,42 @@ const AddFood = ({ user }) => {
         setFoodData({ ...foodData, [e.target.name]: e.target.value });
     };
 
-    // Handle form submission
-    // const handleAddFood = async (e) => {
-    //     e.preventDefault();
-        
-    //     const foodItem = {
-    //         ...foodData,
-    //         quantity: parseInt(foodData.quantity),
-    //         price: parseFloat(foodData.price),
-    //         addedBy: { 
-    //             name: user?.displayName || "Anonymous", 
-    //             email: user?.email || "No email" 
-    //         },
-    //     };
-
-    //     fetch('http://localhost:5000/foods', {
-    //         method: 'POST',
-    //         headers: {
-    //             'content-type' : 'application/json'
-    //         },
-    //         body: JSON.stringify(foodItem)
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         console.log(data);
-    //         if(data.insertedId){
-    //             Swal.fire({
-    //                 icon: "success",
-    //                 title: "Success!",
-    //                 text: "Coffee Added Successfully!"
-    //               });
-    //         }
-    //     })
-
-
-     
-    // };
-
+    // Handle Add food
     const handleAddFood = async (e) => {
         e.preventDefault();
-    
-        if (!user) {
-            Swal.fire({
-                icon: "error",
-                title: "Error!",
-                text: "You must be logged in to add food.",
-            });
-            return;
-        }
-    
+        
         const foodItem = {
             ...foodData,
             quantity: parseInt(foodData.quantity),
             price: parseFloat(foodData.price),
-            addedBy: { name: user.displayName || "Anonymous", email: user.email || "No email" },
+            addedBy: { 
+                name: user?.displayName || "Anonymous", 
+                email: user?.email || "No email" 
+            },
         };
-    
+
         fetch('http://localhost:5000/foods', {
             method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(foodItem),
+            headers: {
+                'content-type' : 'application/json'
+            },
+            body: JSON.stringify(foodItem)
         })
         .then(res => res.json())
         .then(data => {
-            if (data.insertedId) {
+            console.log(data);
+            if(data.insertedId){
                 Swal.fire({
                     icon: "success",
                     title: "Success!",
-                    text: "Food added successfully!",
-                });
+                    text: "Food Added Successfully!"
+                  });
             }
-        });
+        })
+
+
+     
     };
-    
 
     return (
         <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-10">
