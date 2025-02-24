@@ -19,7 +19,7 @@ const FoodDetails = () => {
                     <h1 className="text-3xl font-bold mb-4">{name}</h1>
                     <p className="font-semibold">Category: {category}</p>
                     <p className="font-semibold">Origin: {origin}</p>
-                    <p>Price: ${price ? price.toFixed(2) : "N/A"}</p>
+                    <p>Price: ${price}</p>
                     <p>Description: {description}</p>
                     <p className="font-semibold">Purchased: {purchaseCount || 0} times</p>
 
