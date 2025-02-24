@@ -8,7 +8,7 @@ const TopSelling = () => {
     useEffect(() => {
         const fetchTopSelling = async () => {
             try {
-                const response = await fetch("http://localhost:5000/topSelling");
+                const response = await fetch("https://epicure-server.vercel.app/topSelling");
                 const data = await response.json();
                 setTopProducts(data);
                 setLoading(false);

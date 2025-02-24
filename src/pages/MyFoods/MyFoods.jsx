@@ -3,6 +3,7 @@ import AuthContext from "../../context/AuthContext/AuthContext";
 
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const MyFoods = () => {
     const { user } = useContext(AuthContext);
@@ -13,12 +14,11 @@ const MyFoods = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch(`http://localhost:5000/foods?sellerEmail=${user.email}`)
+        fetch(`https://epicure-server.vercel.app/foods?sellerEmail=${user.email}`)
             .then((res) => res.json())
             .then((data) => setFoods(data))
             .catch((err) => console.error(err));
     }, [user]);
-
 
     const handleEditClick = (food) => {
         setEditingFood(food);
@@ -38,7 +38,7 @@ const MyFoods = () => {
     const handleUpdateSubmit = () => {
         if (!editingFood) return;
 
-        fetch(`http://localhost:5000/foods/${editingFood._id}`, {
+        fetch(`https://epicure-server.vercel.app/foods/${editingFood._id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedData),
@@ -50,8 +50,9 @@ const MyFoods = () => {
                         food._id === editingFood._id ? { ...food, ...updatedData } : food
                     ));
                     setEditingFood(null);
-                    toast("Update SuccessFully!")
+                    Swal.fire("Success!", "Food updated successfully", "success");
                 }
+                
             })
             .catch((err) => console.error("❌ Update failed:", err));
     };

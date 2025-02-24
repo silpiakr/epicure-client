@@ -9,7 +9,7 @@ const MyOrders = () => {
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch(`http://localhost:5000/purchases?email=${user.email}`)
+        fetch(`https://epicure-server.vercel.app/purchases?email=${user.email}`)
             .then(res => res.json())
             .then(data => {
                 if (data.success) {

@@ -10,7 +10,7 @@ const Gallery = () => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/gallery?page=${page}&limit=12`);
+                const response = await fetch(`https://epicure-server.vercel.app/gallery?page=${page}&limit=12`);
                 const data = await response.json();
                 setImages(data.images);
                 setTotalPages(data.totalPages);

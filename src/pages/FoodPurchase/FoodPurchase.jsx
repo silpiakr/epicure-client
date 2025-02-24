@@ -10,7 +10,7 @@ const FoodPurchase = () => {
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/foods/${id}`)
+        fetch(`https://epicure-server.vercel.app/foods/${id}`)
             .then(res => res.json())
             .then(data => setFood(data))
             .catch(err => console.error(err));
@@ -39,7 +39,7 @@ const FoodPurchase = () => {
          console.log("Sending purchase data:", purchaseData); 
     
     
-        fetch("http://localhost:5000/purchase", {
+        fetch("https://epicure-server.vercel.app/purchase", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(purchaseData),

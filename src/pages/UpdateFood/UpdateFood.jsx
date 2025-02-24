@@ -24,7 +24,7 @@ const UpdateFood = () => {
         console.log("Updating food:", updatedFood);
 
         try {
-            const res = await fetch(`http://localhost:5000/foods/${_id}`, {
+            const res = await fetch(`https://epicure-server.vercel.app/foods/${_id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedFood),

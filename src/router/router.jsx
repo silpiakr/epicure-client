@@ -39,22 +39,22 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
         {
           path: 'foods',
           element: <Foods></Foods>,
-          loader: () => fetch(`http://localhost:5000/foods`)
+          loader: () => fetch(`https://epicure-server.vercel.app/foods`)
         },
         {
           path: 'foodDetails/:id',
           element: <FoodDetails></FoodDetails>,
-          loader: ({params}) => fetch(`http://localhost:5000/foods/${params.id}`)
+          loader: ({params}) => fetch(`https://epicure-server.vercel.app/foods/${params.id}`)
         },
         {
           path: 'purchase/:id',
           element:  <FoodPurchase></FoodPurchase>,
-          loader: ({ params }) => fetch(`http://localhost:5000/purchases/${params.id}`), 
+          loader: ({ params }) => fetch(`https://epicure-server.vercel.app/purchases/${params.id}`), 
         },
         {
           path: 'myFoods',
           element: <MyFoods></MyFoods>,
-          loader: () => fetch('http://localhost:5000/foods')
+          loader: () => fetch('https://epicure-server.vercel.app/foods')
         },
         {
           path: 'addFood',
@@ -63,13 +63,13 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
         {
           path: 'myOrders',
           element: <MyOrders></MyOrders>,
-          loader: () => fetch('http://localhost:5000/foods')
+          loader: () => fetch('https://epicure-server.vercel.app/foods')
         },
         {
           path: 'update/:id',
           element: <UpdateFood></UpdateFood>,
           loader: async ({ params }) =>
-            fetch(`http://localhost:5000/foods/${params.id}`)
+            fetch(`https://epicure-server.vercel.app/foods/${params.id}`)
         }
       ]
     },
